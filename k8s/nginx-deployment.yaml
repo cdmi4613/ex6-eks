@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: minmin88/std01-nginx:latest
+          image: minmin88/std01-nginx:1c789b62d579e984c6f7679bb281253d1eda284d
 
           ports:
             - containerPort: 80
