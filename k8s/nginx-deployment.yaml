@@ -5,23 +5,40 @@ metadata:
   name: nginx-deployment
 
 spec:
-  # Nginx Pod 2개 실행
   replicas: 2
 
   selector:
     matchLabels:
-      app: nginx
+      app: nginx-web-label
 
   template:
     metadata:
       labels:
-        app: nginx
+        app: nginx-web-label
 
     spec:
       containers:
         - name: nginx
-          # 기존 GitHub Actions에서 ECR에 Push한 이미지
-          image: 925047940866.dkr.ecr.ap-northeast-1.amazonaws.com/std01-nginx:latest
+          image: minmin88/std01-nginx:latest
 
           ports:
             - containerPort: 80
+
+---
+# Nginx Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+
+spec:
+  type: LoadBalancer
+
+  selector:
+    app: nginx-web-label
+
+  ports:
+    - port: 80
+      targetPort: 80
